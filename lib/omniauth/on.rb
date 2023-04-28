@@ -10,23 +10,23 @@ module OmniAuth
       option :name, 'on'
 
       option :client_options, {
-        :site => ENV['VANTAGE_OAUTH_APP_SITE'] || "http://localhost:5000",
-        :authorize_url => ENV['VANTAGE_OAUTH_APP_AUTHORIZE_URL']  || "/oauth/authorize"
+        site: ENV['VANTAGE_OAUTH_APP_SITE'] || Rails.env.local? ? "http://localhost:5000" : "https://portal.byon.to",
+        authorize_url: ENV['VANTAGE_OAUTH_APP_AUTHORIZE_URL']  || "/oauth/authorize"
       }
 
       uid { raw_info["id"] }
 
       info do
         {
-          :email => raw_info["email"],
-          :name => raw_info["name"],
-          :department => raw_info['department']
+          email: raw_info["email"],
+          name: raw_info["name"],
+          department: raw_info['department']
           # and anything else you want to return to your API consumers
         }
       end
 
       extra do
-        skip_info? ? {} : { :raw_info => raw_info }
+        skip_info? ? {} : { raw_info: raw_info }
       end
 
       def raw_info
